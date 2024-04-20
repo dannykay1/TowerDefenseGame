@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
@@ -14,8 +15,9 @@ ATDPlayerPawn::ATDPlayerPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	SetRootComponent(SceneComponent);
+	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+	SetRootComponent(SphereComponent);
+	SphereComponent->SetCollisionResponseToAllChannels(ECR_Block);
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(GetRootComponent());
@@ -51,8 +53,6 @@ void ATDPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Look);
-		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Shoot);
-		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDPlayerPawn::Reload);
 	}
 }
 
@@ -75,13 +75,4 @@ void ATDPlayerPawn::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ATDPlayerPawn::Shoot(const FInputActionValue& Value)
-{
-
-}
-
-void ATDPlayerPawn::Reload(const FInputActionValue& Value)
-{
 }
