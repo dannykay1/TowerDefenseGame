@@ -51,6 +51,8 @@ void ATDPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Look);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ATDPlayerPawn::Shoot);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDPlayerPawn::Reload);
 	}
 }
 
@@ -73,4 +75,13 @@ void ATDPlayerPawn::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ATDPlayerPawn::Shoot(const FInputActionValue& Value)
+{
+
+}
+
+void ATDPlayerPawn::Reload(const FInputActionValue& Value)
+{
 }
