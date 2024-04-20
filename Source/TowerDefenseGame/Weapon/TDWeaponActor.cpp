@@ -7,14 +7,17 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
-#include "TowerDefenseGame/Player/TDPlayerPawn.h"
+#include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
 
 
 ATDWeaponActor::ATDWeaponActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	GetStaticMeshComponent()->SetComponentTickEnabled(false);
+
 	MuzzleComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("MuzzleComponent"));
+	MuzzleComponent->SetComponentTickEnabled(false);
 	MuzzleComponent->SetupAttachment(GetRootComponent());
 	MuzzleComponent->SetRelativeLocation(FVector::ForwardVector * 100.f);
 
@@ -23,14 +26,11 @@ ATDWeaponActor::ATDWeaponActor()
 
 void ATDWeaponActor::BeginPlay()
 {
-	Super::BeginPlay();
+	Super::BeginPlay();	
 
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
+		UTDBlueprintFunctionLibrary::AddMappingContext(PC, DefaultMappingContext);
 
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PC->InputComponent))
 		{

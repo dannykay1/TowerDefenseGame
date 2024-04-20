@@ -9,6 +9,7 @@
 #include "Components/SphereComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
 
 
 ATDPlayerPawn::ATDPlayerPawn()
@@ -29,15 +30,7 @@ ATDPlayerPawn::ATDPlayerPawn()
 void ATDPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// Add Input Mapping Context
-	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
+	UTDBlueprintFunctionLibrary::AddMappingContext(Cast<APlayerController>(Controller), DefaultMappingContext);
 }
 
 void ATDPlayerPawn::Tick(float DeltaTime)
