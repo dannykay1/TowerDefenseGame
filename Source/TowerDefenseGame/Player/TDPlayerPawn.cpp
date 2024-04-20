@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/LocalPlayer.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 
 ATDPlayerPawn::ATDPlayerPawn()
@@ -19,6 +20,8 @@ ATDPlayerPawn::ATDPlayerPawn()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(GetRootComponent());
 	CameraComponent->bUsePawnControlRotation = true;
+
+	FloatingPawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovementComponent"));
 }
 
 void ATDPlayerPawn::BeginPlay()
@@ -26,7 +29,7 @@ void ATDPlayerPawn::BeginPlay()
 	Super::BeginPlay();
 
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -53,11 +56,16 @@ void ATDPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ATDPlayerPawn::Move(const FInputActionValue& Value)
 {
+	const FVector MoveDirection = Value.Get<FVector>();
+
+	AddMovementInput(GetActorForwardVector(), MoveDirection.X);
+	AddMovementInput(GetActorRightVector(), MoveDirection.Y);
+	AddMovementInput(GetActorUpVector(), MoveDirection.Z);
 }
 
 void ATDPlayerPawn::Look(const FInputActionValue& Value)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{

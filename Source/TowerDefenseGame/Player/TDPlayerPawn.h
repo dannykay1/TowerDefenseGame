@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "TDPlayerPawn.generated.h"
 
+class UFloatingPawnMovement;
 class USceneComponent;
 class UCameraComponent;
 struct FInputActionValue;
@@ -30,6 +31,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
 	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
+	UFloatingPawnMovement* FloatingPawnMovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta=(AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
