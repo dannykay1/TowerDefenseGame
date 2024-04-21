@@ -4,6 +4,7 @@
 #include "TDConstructionComponent.h"
 #include "EnhancedInputComponent.h"
 #include "TDConstructionPreviewActor.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "TowerDefenseGame/Player/TDPlayerController.h"
 #include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
 
@@ -35,7 +36,9 @@ void UTDConstructionComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 		FHitResult HitResult;
 		if (UTDBlueprintFunctionLibrary::PlayerLineTrace(this, 50000.f, HitResult))
 		{
-			PreviewActor->SetActorLocationAndRotation(HitResult.ImpactPoint, GetOwner()->GetActorRotation());
+			const FVector Location = HitResult.ImpactPoint;
+			const FRotator Rotation = UKismetMathLibrary::MakeRotFromZ(HitResult.Normal);
+			PreviewActor->SetActorLocationAndRotation(Location, Rotation);
 		}
 	}
 }
