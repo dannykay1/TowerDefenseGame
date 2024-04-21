@@ -9,7 +9,8 @@
 #include "Components/SphereComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/FloatingPawnMovement.h"
-#include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "TowerDefenseGame/Weapon/TDWeaponActor.h"
 
 
 ATDPlayerPawn::ATDPlayerPawn()
@@ -30,7 +31,18 @@ ATDPlayerPawn::ATDPlayerPawn()
 void ATDPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	UTDBlueprintFunctionLibrary::AddMappingContext(Cast<APlayerController>(Controller), DefaultMappingContext);
+
+	if (WeaponClass)
+	{
+		const FTransform SpawnTransform;
+		
+		WeaponActor = GetWorld()->SpawnActorDeferred<ATDWeaponActor>(WeaponClass, SpawnTransform, this, this);
+		WeaponActor = Cast<ATDWeaponActor>(UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform));
+		
+		WeaponActor->AttachToComponent(CameraComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		WeaponActor->SetActorRelativeLocation(FVector(-20.f, 20.f, -20.f));
+		WeaponActor->SetActorRelativeRotation(FRotator::ZeroRotator);
+	}
 }
 
 void ATDPlayerPawn::Tick(float DeltaTime)

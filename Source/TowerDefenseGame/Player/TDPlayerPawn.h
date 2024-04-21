@@ -13,6 +13,7 @@ class UCameraComponent;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
+class ATDWeaponActor;
 
 UCLASS()
 class TOWERDEFENSEGAME_API ATDPlayerPawn : public APawn
@@ -37,13 +38,16 @@ protected:
 	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovementComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UInputMappingContext> DefaultMappingContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ATDWeaponActor> WeaponClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ATDWeaponActor> WeaponActor;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

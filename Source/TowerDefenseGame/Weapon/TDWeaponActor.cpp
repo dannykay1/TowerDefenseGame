@@ -5,9 +5,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/ArrowComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
+
+#pragma optimize("", off)
 
 
 ATDWeaponActor::ATDWeaponActor()
@@ -26,17 +27,12 @@ ATDWeaponActor::ATDWeaponActor()
 
 void ATDWeaponActor::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();
 
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0))
+	if (UEnhancedInputComponent* EnhancedInputComponent = UTDBlueprintFunctionLibrary::GetEnhancedInputComponent(this))
 	{
-		UTDBlueprintFunctionLibrary::AddMappingContext(PC, DefaultMappingContext);
-
-		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PC->InputComponent))
-		{
-			EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ATDWeaponActor::Shoot);
-			EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDWeaponActor::Reload);
-		}
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ATDWeaponActor::Shoot);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Started, this, &ATDWeaponActor::Reload);
 	}
 }
 
@@ -45,10 +41,14 @@ void ATDWeaponActor::Shoot(const FInputActionValue& InputActionValue)
 	if (AmmoCount > 0)
 	{
 		AmmoCount -= 1;
+		OnAmmoChanged.Broadcast(AmmoCount, MaxAmmoCount);
 	}
 }
 
 void ATDWeaponActor::Reload(const FInputActionValue& InputActionValue)
 {
 	AmmoCount = MaxAmmoCount;
+	OnAmmoChanged.Broadcast(AmmoCount, MaxAmmoCount);
 }
+
+#pragma optimize("", on)

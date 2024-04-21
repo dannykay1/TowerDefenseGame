@@ -6,8 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "TDBlueprintFunctionLibrary.generated.h"
 
-class APlayerController;
-class UInputMappingContext;
+class UEnhancedInputComponent;
 
 UCLASS()
 class TOWERDEFENSEGAME_API UTDBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
@@ -15,5 +14,5 @@ class TOWERDEFENSEGAME_API UTDBlueprintFunctionLibrary : public UBlueprintFuncti
 	GENERATED_BODY()
 
 public:
-	static void AddMappingContext(const APlayerController* PlayerController, const UInputMappingContext* InputMappingContext);
+	static UEnhancedInputComponent* GetEnhancedInputComponent(const UObject* ContextObject);
 };

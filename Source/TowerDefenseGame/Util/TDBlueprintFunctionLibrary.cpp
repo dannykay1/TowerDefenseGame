@@ -2,18 +2,15 @@
 
 
 #include "TDBlueprintFunctionLibrary.h"
-#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
 
-void UTDBlueprintFunctionLibrary::AddMappingContext(const APlayerController* PlayerController, const UInputMappingContext* InputMappingContext)
+UEnhancedInputComponent* UTDBlueprintFunctionLibrary::GetEnhancedInputComponent(const UObject* ContextObject)
 {
-	if (PlayerController == nullptr || InputMappingContext == nullptr)
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(ContextObject, 0))
 	{
-		return;
+		return Cast<UEnhancedInputComponent>(PC->InputComponent);
 	}
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-	if (Subsystem)
-	{
-		Subsystem->AddMappingContext(InputMappingContext, 0);
-	}
+	return nullptr;
 }
