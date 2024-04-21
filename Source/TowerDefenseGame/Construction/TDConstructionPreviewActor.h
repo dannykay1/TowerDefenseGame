@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/StaticMeshActor.h"
+#include "GameFramework/Actor.h"
 #include "TDConstructionPreviewActor.generated.h"
 
-UCLASS()
-class TOWERDEFENSEGAME_API ATDConstructionPreviewActor : public AStaticMeshActor
+UCLASS(Abstract, Blueprintable, BlueprintType)
+class TOWERDEFENSEGAME_API ATDConstructionPreviewActor : public AActor
 {
 	GENERATED_BODY()
 

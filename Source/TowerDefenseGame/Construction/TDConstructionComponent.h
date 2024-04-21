@@ -7,10 +7,10 @@
 #include "TDConstructionComponent.generated.h"
 
 class ATDConstructionPreviewActor;
+class ATDTurret;
 class UInputAction;
 struct FInputActionValue;
 class UStaticMesh;
-class AActor;
 
 USTRUCT(BlueprintType)
 struct FConstructionData : public FTableRowBase
@@ -29,10 +29,10 @@ struct FConstructionData : public FTableRowBase
 	FText Description;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UStaticMesh> PreviewMesh;
+	TSubclassOf<ATDConstructionPreviewActor> PreviewActorClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<AActor> ActorToSpawn;
+	TSubclassOf<ATDTurret> TurretClass;
 };
 
 UCLASS(Abstract, Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))

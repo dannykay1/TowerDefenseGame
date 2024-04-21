@@ -3,12 +3,12 @@
 
 #include "TDConstructionPreviewActor.h"
 #include "TDConstructionComponent.h"
+#include "TowerDefenseGame/Turret/TDTurret.h"
 
 
 ATDConstructionPreviewActor::ATDConstructionPreviewActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	SetMobility(EComponentMobility::Movable);
 	SetActorEnableCollision(false);
 }
 
@@ -25,11 +25,6 @@ void ATDConstructionPreviewActor::Tick(float DeltaTime)
 void ATDConstructionPreviewActor::ConstructPreview(const FDataTableRowHandle InRowHandle)
 {
 	RowHandle = InRowHandle;
-
-	if (const FConstructionData* Data = RowHandle.GetRow<FConstructionData>(""))
-	{
-		GetStaticMeshComponent()->SetStaticMesh(Data->PreviewMesh);
-	}
 }
 
 void ATDConstructionPreviewActor::Construct() const
@@ -37,6 +32,6 @@ void ATDConstructionPreviewActor::Construct() const
 	if (const FConstructionData* Data = RowHandle.GetRow<FConstructionData>(""))
 	{
 		const FTransform SpawnTransform = FTransform(GetActorRotation(), GetActorLocation());
-		GetWorld()->SpawnActor(Data->ActorToSpawn, &SpawnTransform);
+		GetWorld()->SpawnActor(Data->TurretClass, &SpawnTransform);
 	}
 }

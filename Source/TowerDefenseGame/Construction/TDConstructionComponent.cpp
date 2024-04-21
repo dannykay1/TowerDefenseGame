@@ -96,23 +96,30 @@ void UTDConstructionComponent::ActivateSlot(const int32 SlotNumber)
 		return;
 	}
 
-	if (PreviewActor)
+	const FConstructionData* ConstructionData = ConstructionDataTable->FindRow<FConstructionData>(RowNames[SlotNumber], "");
+	if (ConstructionData == nullptr)
 	{
-		PreviewActor->Destroy();
+		return;
 	}
 
-	PreviewActor = GetWorld()->SpawnActor<ATDConstructionPreviewActor>(GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
-
-	if (PreviewActor)
+	ATDConstructionPreviewActor* SpawnedPreview = GetWorld()->SpawnActor<ATDConstructionPreviewActor>(ConstructionData->PreviewActorClass, GetOwner()->GetActorLocation(), GetOwner()->GetActorRotation());
+	if (SpawnedPreview)
 	{
 		FDataTableRowHandle RowHandle;
 		RowHandle.DataTable = ConstructionDataTable;
 		RowHandle.RowName = RowNames[SlotNumber];
-		PreviewActor->ConstructPreview(RowHandle);
+		SpawnedPreview->ConstructPreview(RowHandle);
 
 		if (ATDPlayerController* PlayerController = UTDBlueprintFunctionLibrary::GetTDPlayerController(this))
 		{
 			PlayerController->EnterConstructionMode();
 		}
+
+		if (PreviewActor)
+		{
+			PreviewActor->Destroy();
+		}
+
+		PreviewActor = SpawnedPreview;
 	}
 }
