@@ -25,14 +25,17 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UCameraComponent> CameraComponent;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	TObjectPtr<ATDWeaponActor> WeaponActor;
+
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<USphereComponent> SphereComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> CameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovementComponent;
@@ -45,9 +48,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ATDWeaponActor> WeaponClass;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ATDWeaponActor> WeaponActor;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

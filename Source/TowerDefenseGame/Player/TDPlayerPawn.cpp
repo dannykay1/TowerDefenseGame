@@ -35,10 +35,10 @@ void ATDPlayerPawn::BeginPlay()
 	if (WeaponClass)
 	{
 		const FTransform SpawnTransform;
-		
+
 		WeaponActor = GetWorld()->SpawnActorDeferred<ATDWeaponActor>(WeaponClass, SpawnTransform, this, this);
 		WeaponActor = Cast<ATDWeaponActor>(UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform));
-		
+
 		WeaponActor->AttachToComponent(CameraComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		WeaponActor->SetActorRelativeLocation(FVector(-20.f, 20.f, -20.f));
 		WeaponActor->SetActorRelativeRotation(FRotator::ZeroRotator);
