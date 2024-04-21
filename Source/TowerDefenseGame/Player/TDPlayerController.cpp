@@ -2,7 +2,6 @@
 
 
 #include "TDPlayerController.h"
-
 #include "EnhancedInputSubsystems.h"
 
 ATDPlayerController::ATDPlayerController()
@@ -19,17 +18,24 @@ void ATDPlayerController::BeginPlay()
 	}
 }
 
-void ATDPlayerController::ToggleConstructionMode() const
+void ATDPlayerController::EnterConstructionMode()
+{
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	{
+		if (!Subsystem->HasMappingContext(ConstructionMappingContext))
+		{
+			Subsystem->AddMappingContext(ConstructionMappingContext, 1);
+		}
+	}
+}
+
+void ATDPlayerController::ExitConstructionMode()
 {
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		if (Subsystem->HasMappingContext(ConstructionMappingContext))
 		{
 			Subsystem->RemoveMappingContext(ConstructionMappingContext);
-		}
-		else
-		{
-			Subsystem->AddMappingContext(ConstructionMappingContext, 1);
 		}
 	}
 }

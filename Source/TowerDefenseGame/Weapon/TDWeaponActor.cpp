@@ -10,7 +10,6 @@
 
 #pragma optimize("", off)
 
-
 ATDWeaponActor::ATDWeaponActor()
 {
 	PrimaryActorTick.bCanEverTick = false;

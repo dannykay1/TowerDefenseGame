@@ -16,10 +16,11 @@ class TOWERDEFENSEGAME_API ATDPlayerController : public APlayerController
 public:
 	ATDPlayerController();
 
+	void EnterConstructionMode();
+	void ExitConstructionMode();
+
 protected:
 	virtual void BeginPlay() override;
-
-	void ToggleConstructionMode() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> CombatMappingContext;

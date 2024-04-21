@@ -21,5 +21,5 @@ public:
 	static ATDPlayerController* GetTDPlayerController(const UObject* WorldObject);
 	static ATDPlayerPawn* GetTDPlayerPawn(const UObject* WorldObject);
 	
-	static bool PlayerLineTrace(const UObject* ContextObject, float TraceDistance, FHitResult& WorldObject);
+	static bool PlayerLineTrace(const UObject* ContextObject, float TraceDistance, FHitResult& HitResult);
 };
