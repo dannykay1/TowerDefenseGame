@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "TowerDefenseGame/Util/TDBlueprintFunctionLibrary.h"
 
 #pragma optimize("", off)
@@ -41,6 +42,13 @@ void ATDWeaponActor::Shoot(const FInputActionValue& InputActionValue)
 	{
 		AmmoCount -= 1;
 		OnAmmoChanged.Broadcast(AmmoCount, MaxAmmoCount);
+
+		FHitResult HitResult;
+		if (UTDBlueprintFunctionLibrary::PlayerLineTrace(this, 50000.f, HitResult))
+		{
+			APawn* Player = UGameplayStatics::GetPlayerPawn(this, 0);
+			UGameplayStatics::ApplyPointDamage(HitResult.GetActor(), 10.f, HitResult.Normal, HitResult, Player->GetController(), Player, nullptr);
+		}
 	}
 }
 
